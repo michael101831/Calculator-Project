@@ -1,0 +1,7 @@
+/* .inputOne {
+  width: this.props.value + "px";
+} */
+
+.inputTwo {
+  width: auto;
+}
