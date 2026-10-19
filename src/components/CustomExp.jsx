@@ -1,47 +1,28 @@
-import { useState, useEffect } from "react";
-
-function CompExp({ calc }) {
-  const [equation, setEquation] = useState(0);
-  const [length, setLength] = useState(5);
-
+function CompExp({ setSolution }) {
   function calcHandler(event) {
     event.preventDefault();
 
-    let finalEquation = String(equation);
-    finalEquation.replace("x", "*").replace("X", "*").replace("^", "**");
-    console.log(String(equation));
+    const formData = new FormData(event.target);
+    const equation = String(formData.get("equation"));
+    const fixedFinalEquation = equation.replace("x", "*").replace("X", "*").replace("^", "**");
 
-    calc(`${finalEquation}`);
+    setSolution(Function(`'use strict'; return (${fixedFinalEquation})`)());
   }
-
-  function expressionHandler(event) {
-    setEquation(event.target.value);
-    setLength(String(event.target.value).length / 1.8 + 0.6);
-  }
-
-  useEffect(() => {
-    if (length === 0.6) {
-      setLength(5);
-    }
-    console.log(length);
-  }, [length]);
 
   return (
-    <div>
-      <div>
-        <input
-          required
-          name="equation"
-          defaultValue=""
-          placeholder="Expression"
-          style={{ width: `${length}em` }}
-          onChange={expressionHandler}
-        ></input>
+    <form className="calc-form" onSubmit={calcHandler}>
+      <div className="calc-row">
+        <label className="field field-grow">
+          <span>Expression</span>
+          <input
+            required
+            name="equation"
+            placeholder="12 x 4 ^ 2"
+          />
+        </label>
       </div>
-      <div>
-        <button onClick={calcHandler}>Calculate</button>
-      </div>
-    </div>
+      <button type="submit">Calculate</button>
+    </form>
   );
 }
 

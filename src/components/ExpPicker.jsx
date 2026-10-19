@@ -1,24 +1,24 @@
-import { useState } from "react";
-
 import classes from "./ExpPicker.module.css";
 
-function ExpPicker({ setNum }) {
-  function setNumHandler(event) {
-    setNum(Number(event.target.name));
-  }
+function ExpPicker({ expressionGroups, selected, activeLabel, onSelect }) {
+  const expressions = expressionGroups[selected] || [];
 
   return (
-    <div>
-      <h4 className={classes.head}>Expressions</h4>
-      <button className={classes.btn} name="0" onClick={setNumHandler}>
-        Simple
-      </button>
-      <button className={classes.btn} name="1" onClick={setNumHandler}>
-        Custom
-      </button>
-      <button className={classes.btn} name="2" onClick={setNumHandler}>
-        Chance
-      </button>
+    <div className={classes.row} role="group" aria-label="Expressions">
+      {expressions.map((exp) => {
+        const isActive = exp.label === activeLabel;
+        return (
+          <button
+            key={exp.label}
+            type="button"
+            className={isActive ? `${classes.btn} ${classes.active}` : classes.btn}
+            aria-pressed={isActive}
+            onClick={() => onSelect(exp)}
+          >
+            {exp.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

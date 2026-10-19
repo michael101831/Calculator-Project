@@ -1,9 +1,33 @@
-.head {
-  margin-bottom: 1px;
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
 }
 
 .btn {
-  margin-top: 1px;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #d3dde6;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #243645;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-  margin-bottom: 15px;
+.btn:hover {
+  border-color: #b7c6d3;
+  background: #f7fafb;
+}
+
+.btn.active {
+  border-color: #16324a;
+  background: #16324a;
+  color: #ffffff;
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(14, 107, 86, 0.28);
+  outline-offset: 1px;
 }

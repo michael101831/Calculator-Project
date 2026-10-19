@@ -1,71 +1,45 @@
-import { useState, useEffect } from "react";
-import classes from "./ChanceExp.module.css";
-
-function ChanceExp({ calc }) {
-  const [chanceLgth, setChanceLgth] = useState(9);
-  const [rollLgth, setRollLgth] = useState(9);
-  const [chance, setChance] = useState(0);
-  const [rolls, setRolls] = useState(0);
-
+function ChanceExp({ setSolution }) {
   function calcHandler(event) {
     event.preventDefault();
 
-    console.log(chance, rolls);
+    const formData = new FormData(event.target);
+    const chance = formData.get("chance");
+    const rolls = formData.get("rolls");
 
-    calc(`1-((1-${chance})**${rolls})`);
+    setSolution(
+      Number(Function(`'use strict'; return (1-((1-${chance})**${rolls}))`)()).toFixed(3)
+    );
   }
-
-  function chanceHandler(event) {
-    setChance(event.target.value);
-    setChanceLgth(String(event.target.value).length / 1.8 + 1.8);
-  }
-  function rollHandler(event) {
-    setRolls(event.target.value);
-
-    setRollLgth(String(event.target.value).length / 1.8 + 1.8);
-  }
-
-  useEffect(() => {
-    if (rollLgth === 1.8) {
-      setRollLgth(9);
-    }
-  }, [rollLgth]);
-
-  useEffect(() => {
-    if (chanceLgth === 1.8) {
-      setChanceLgth(9);
-    }
-  }, [chanceLgth]);
 
   return (
-    <div>
-      <div>
-        <input
-          required
-          type="number"
-          min={0.001}
-          max={1}
-          step={0.001}
-          placeholder="Decimal Chance"
-          defaultValue=""
-          style={{ width: `${chanceLgth}em` }}
-          onChange={chanceHandler}
-        ></input>
-        <input
-          required
-          type="number"
-          min={1}
-          max={999}
-          placeholder="Number Of Rolls"
-          defaultValue=""
-          style={{ width: `${rollLgth}em` }}
-          onChange={rollHandler}
-        ></input>
+    <form className="calc-form" onSubmit={calcHandler}>
+      <div className="calc-row">
+        <label className="field">
+          <span>Chance per trial</span>
+          <input
+            required
+            type="number"
+            name="chance"
+            min={0.001}
+            max={1}
+            step={0.001}
+            placeholder="0.25"
+          />
+        </label>
+        <label className="field">
+          <span>Trials</span>
+          <input
+            required
+            type="number"
+            name="rolls"
+            min={1}
+            max={999}
+            placeholder="10"
+          />
+        </label>
       </div>
-      <div>
-        <button onClick={calcHandler}>Calculate</button>
-      </div>
-    </div>
+      <button type="submit">Calculate</button>
+    </form>
   );
 }
 
