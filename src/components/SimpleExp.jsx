@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-function SimpleExp({ calc }) {
+function SimpleExp({ setSolution }) {
   function calcHandler(event) {
     event.preventDefault();
 
@@ -11,7 +9,7 @@ function SimpleExp({ calc }) {
     const firstNum = formObject.firstNum;
     const finalFirstNum = firstNum.slice(
       firstNum.search(/[1-9-]/),
-      firstNum.length
+      firstNum.length,
     );
 
     const modifier = formObject.modifier;
@@ -22,39 +20,46 @@ function SimpleExp({ calc }) {
       secondNum.length
     );
 
-    calc(`${finalFirstNum} ${modifier} ${finalSecondNum}`);
+    setSolution(Function(`'use strict'; return ((${finalFirstNum}) ${modifier} (${finalSecondNum}))`)());
   }
 
   return (
-    <form onSubmit={calcHandler}>
-      <div>
-        <input
-          required
-          type="number"
-          name="firstNum"
-          min={-999}
-          max={999}
-          defaultValue={0}
-        ></input>
-        <select required name="modifier">
-          <option defaultValue="+">+</option>
-          <option value="-">-</option>
-          <option value="*">x</option>
-          <option value="/">/</option>
-          <option value="**">^</option>
-        </select>
-        <input
-          required
-          type="number"
-          name="secondNum"
-          min={-999}
-          max={999}
-          defaultValue={0}
-        ></input>
+    <form className="calc-form" onSubmit={calcHandler}>
+      <div className="calc-row">
+        <label className="field">
+          <span>First number</span>
+          <input
+            required
+            type="number"
+            name="firstNum"
+            min={-999}
+            max={999}
+            defaultValue={0}
+          />
+        </label>
+        <label className="field field-compact">
+          <span>Operator</span>
+          <select required name="modifier" defaultValue="+">
+            <option value="+">+</option>
+            <option value="-">−</option>
+            <option value="*">×</option>
+            <option value="/">÷</option>
+            <option value="**">xⁿ</option>
+          </select>
+        </label>
+        <label className="field">
+          <span>Second number</span>
+          <input
+            required
+            type="number"
+            name="secondNum"
+            min={-999}
+            max={999}
+            defaultValue={0}
+          />
+        </label>
       </div>
-      <div>
-        <button type="submit">Calculate</button>
-      </div>
+      <button type="submit">Calculate</button>
     </form>
   );
 }
